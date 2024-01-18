@@ -23,6 +23,6 @@ $(PLOTS_DIR)/%.png: $(SCRIPTS_DIR)/%.plot.py $(SCRIPTS_DIR)/utils.py $(DATA_DIR)
 	python3 $< $(DATA_DIR)/$*.csv $@
 
 .PHONY: all-plots
-all-plots: $(PLOTS_DIR)/*.png
+all-plots: $(PLOTS_DIR)/test.png
 
 .NOTINTERMEDIATE:
