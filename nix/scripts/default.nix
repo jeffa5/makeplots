@@ -2,6 +2,7 @@
   python3,
   stdenv,
   lib,
+  symlinkJoin,
 }: let
   python = python3.withPackages (ps: [ps.pandas ps.seaborn]);
   pythonScript = {
@@ -51,4 +52,9 @@ in rec {
 
   test-data = makeData "test-data" ./test.data.py;
   test-plot = makePlots "test-plot" ./test.plot.py test-data [];
+
+  all-plots = symlinkJoin {
+    name = "all-plots";
+    paths = [test-plot];
+  };
 }
