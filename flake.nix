@@ -6,11 +6,7 @@
     system = "x86_64-linux";
     pkgs = import nixpkgs {inherit system;};
   in {
-    packages.${system} = import ./nix/scripts {
-      python3 = pkgs.python3;
-      stdenv = pkgs.stdenv;
-      lib = pkgs.lib;
-    };
+    packages.${system} = pkgs.callPackage ./nix/scripts {stdenv = pkgs.stdenvNoCC;};
 
     devShells.${system}.default = pkgs.mkShellNoCC {
       packages = [
