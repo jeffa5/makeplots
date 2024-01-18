@@ -45,7 +45,7 @@
       inherit name script;
       data = "${dataDrv}/data.csv";
       utils = [./utils.py] ++ utils;
-      outputs = builtins.map (e: "plot.${e}") plotExtensions;
+      outputs = builtins.map (e: "${name}.${e}") plotExtensions;
     };
 in rec {
   inherit all-data;
