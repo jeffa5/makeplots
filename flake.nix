@@ -5,8 +5,10 @@
   }: let
     system = "x86_64-linux";
     pkgs = import nixpkgs {inherit system;};
+    lib = pkgs.lib;
+    plotPackages = pkgs.callPackage ./nix/scripts {stdenv = pkgs.stdenvNoCC;};
   in {
-    packages.${system} = pkgs.callPackage ./nix/scripts {stdenv = pkgs.stdenvNoCC;};
+    packages.${system} = lib.attrsets.filterAttrs (_: v: lib.attrsets.isDerivation v) plotPackages;
 
     formatter.${system} = pkgs.alejandra;
 
