@@ -7,29 +7,28 @@
   pythonScript = {
     name,
     script,
-    data,
     utils ? [],
+    data,
     outputs,
   }: let
-    filter = lib.fileset.fileFilter (n: n.name == script || builtins.elem n.name utils) ./.;
     absOutputs = lib.strings.concatMapStringsSep " " (f: "$out/${f}") outputs;
+    scriptName = lib.lists.last (builtins.split "/" (toString script));
   in
     stdenv.mkDerivation {
       inherit name;
       src = lib.fileset.toSource {
         root = ./.;
-        fileset = filter;
+        fileset = lib.fileset.unions ([script] ++ utils);
       };
       buildInputs = [python];
       buildPhase = ''
-        ls $src
         mkdir $out
-        python ${script} ${data} ${absOutputs}
+        python ${scriptName} ${data} ${absOutputs}
       '';
     };
   all-data = pythonScript {
     name = "all-data";
-    script = "all.py";
+    script = ./all.py;
     data = "${../results}/*";
     outputs = ["data.csv"];
   };
@@ -44,12 +43,12 @@
     pythonScript {
       inherit name script;
       data = "${dataDrv}/data.csv";
-      utils = ["utils.py"]++utils;
+      utils = [./utils.py] ++ utils;
       outputs = builtins.map (e: "plot.${e}") plotExtensions;
     };
 in rec {
   inherit all-data;
 
-  test-data = makeData "test-data" "test.data.py";
-  test-plot = makePlots "test-plot" "test.plot.py" test-data [];
+  test-data = makeData "test-data" ./test.data.py;
+  test-plot = makePlots "test-plot" ./test.plot.py test-data [];
 }
