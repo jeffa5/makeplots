@@ -25,10 +25,16 @@ For a plot that will be called `plot1` we want a `plot1.csv` for the data, and t
 
 The directory `make` shows an example of a basic setup.
 
+To get all of the plots run `make all-plots`.
+The plots will then be available in the `plots` directory.
+
 ### Nix
 
 Make is ok, but it can be easy to miss dependencies, leading to things not rebuilding properly.
 Nix fixes this by only giving the program access to what it asks for, not the entire world.
+
+To get all of the plots run `nix build .#all-plots`.
+The plots will then be available in the `result` directory.
 
 ## Notes
 
