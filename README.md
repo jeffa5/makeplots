@@ -25,6 +25,11 @@ For a plot that will be called `plot1` we want a `plot1.csv` for the data, and t
 
 The directory `make` shows an example of a basic setup.
 
+### Nix
+
+Make is ok, but it can be easy to miss dependencies, leading to things not rebuilding properly.
+Nix fixes this by only giving the program access to what it asks for, not the entire world.
+
 ## Notes
 
 We want to track the files that a program takes as input, and those it produces.
